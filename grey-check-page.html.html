@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grey Check Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #e8e8e8;
+      --card:         #f2f2f2;
+      --text:         #1c1c1c;
+      --muted:        #6a6a6a;
+      --border:       rgba(0,0,0,0.12);
+      --border-focus: #555;
+      --input-bg:     #eaeaea;
+      --btn-bg:       #3a3a3a;
+      --btn-hover:    #222;
+      --success-bg:   #d8edd8;
+      --success-text: #1f4d1f;
+      --radius:       14px;
+      --radius-sm:    8px;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.07) 1px, transparent 1px);
+      background-size: 22px 22px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LOGIN CARD ── */
+    .login-card {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 430px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 2.5rem 2.25rem;
+      box-shadow: 0 6px 36px rgba(0,0,0,0.10);
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      background: #dcdcdc;
+      color: #444;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .field { margin-bottom: 1.25rem; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      height: 46px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      padding: 0 14px;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+    }
+
+    .btn-primary {
+      width: 100%;
+      height: 46px;
+      background: var(--btn-bg);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      margin-top: 0.5rem;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-primary:hover  { background: var(--btn-hover); }
+    .btn-primary:active { transform: scale(0.98); }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 1.5rem 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .g_id_signin {
+      display: flex;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    /* ── GAME PAGE ── */
+    #gamePage {
+      display: none;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 620px;
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .game-header {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 1.25rem 1.75rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .game-title-wrap h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .game-title-wrap p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .game-stats {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .stat-box {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      text-align: center;
+      min-width: 64px;
+    }
+
+    .stat-box .stat-val {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-box .stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 3px;
+    }
+
+    .btn-restart {
+      background: var(--btn-bg);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-sm);
+      padding: 10px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn-restart:hover  { background: var(--btn-hover); }
+    .btn-restart:active { transform: scale(0.97); }
+
+    /* ── CARD GRID ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .mem-card {
+      aspect-ratio: 1;
+      cursor: pointer;
+      perspective: 600px;
+    }
+
+    .mem-card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.45s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 10px;
+    }
+
+    .mem-card.flipped .mem-card-inner,
+    .mem-card.matched .mem-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .mem-card-front,
+    .mem-card-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* back = hidden side (shown by default) */
+    .mem-card-back {
+      background: #d4d4d4;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .mem-card-back::after {
+      content: '?';
+      font-size: 26px;
+      font-weight: 600;
+      color: #aaa;
+    }
+
+    /* front = emoji side (shown when flipped) */
+    .mem-card-front {
+      background: #f8f8f8;
+      border: 1.5px solid rgba(0,0,0,0.10);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      transform: rotateY(180deg);
+      font-size: 38px;
+    }
+
+    .mem-card.matched .mem-card-front {
+      background: #e6f4e6;
+      border-color: rgba(50,150,50,0.25);
+    }
+
+    /* ── WIN OVERLAY ── */
+    .win-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .win-overlay.show { display: flex; }
+
+    .win-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 340px;
+      width: 90%;
+      box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+      animation: slideUp 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    .win-emoji { font-size: 52px; margin-bottom: 1rem; }
+
+    .win-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .win-box p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .win-box .btn-restart {
+      width: 100%;
+      height: 46px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════ LOGIN PAGE ══════════════ -->
+  <div class="login-card" id="loginPage">
+    <div id="formView">
+      <span class="badge">Grey Check Page</span>
+      <h1>Welcome</h1>
+      <p class="subtitle">Fill in your details or sign in with Google to continue.</p>
+
+      <div class="field">
+        <label for="userName">Name</label>
+        <input type="text" id="userName" placeholder="Your full name" autocomplete="name" />
+      </div>
+
+      <div class="field">
+        <label for="userAge">Age</label>
+        <input type="number" id="userAge" placeholder="Your age" min="1" max="120" />
+      </div>
+
+      <button class="btn-primary" onclick="handleFormSubmit()">Continue</button>
+
+      <div class="divider">or</div>
+
+      <div id="g_id_onload"
+           data-client_id="660655413062-kfjmf90obmjgeeqb5q72ep963003c39e.apps.googleusercontent.com"
+           data-callback="handleGoogleResponse"
+           data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+           data-type="standard"
+           data-size="large"
+           data-theme="outline"
+           data-text="signin_with"
+           data-width="390">
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ GAME PAGE ══════════════ -->
+  <div id="gamePage">
+    <div class="game-header">
+      <div class="game-title-wrap">
+        <h2>Grey Memory Game</h2>
+        <p id="welcomeMsg">Match all the pairs to win!</p>
+      </div>
+      <div class="game-stats">
+        <div class="stat-box">
+          <div class="stat-val" id="movesCount">0</div>
+          <div class="stat-label">Moves</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="pairsCount">0</div>
+          <div class="stat-label">Pairs</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" id="timerCount">0</div>
+          <div class="stat-label">Secs</div>
+        </div>
+      </div>
+      <button class="btn-restart" onclick="startGame()">↺ Restart</button>
+    </div>
+
+    <div class="card-grid" id="cardGrid"></div>
+  </div>
+
+  <!-- ══════════════ WIN OVERLAY ══════════════ -->
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-box">
+      <div class="win-emoji">🎉</div>
+      <h3>You Won!</h3>
+      <p id="winMsg">Completed in 0 moves and 0 seconds.</p>
+      <button class="btn-restart" onclick="startGame(); closeWin();">Play Again</button>
+    </div>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <script>
+    // ── AUTH ──────────────────────────────────────────
+    function handleFormSubmit() {
+      var name = document.getElementById('userName').value.trim();
+      var age  = document.getElementById('userAge').value.trim();
+      if (!name) { alert('Please enter your name.'); return; }
+      if (!age || Number(age) < 1 || Number(age) > 120) { alert('Please enter a valid age.'); return; }
+      launchGame(name);
+    }
+
+    function handleGoogleResponse(response) {
+      var parts   = response.credential.split('.');
+      var payload = JSON.parse(atob(parts[1]));
+      launchGame(payload.name || payload.email);
+    }
+
+    function launchGame(userName) {
+      document.getElementById('loginPage').style.display  = 'none';
+      document.getElementById('gamePage').style.display   = 'block';
+      document.getElementById('welcomeMsg').textContent   = 'Welcome, ' + userName + '! Match all the pairs.';
+      startGame();
+    }
+
+    // ── GAME ──────────────────────────────────────────
+    var EMOJIS = ['🐶','🐱','🦊','🐸','🦁','🐯','🐻','🦄'];
+    var cards        = [];
+    var flipped      = [];
+    var matchedCount = 0;
+    var moves        = 0;
+    var seconds      = 0;
+    var timerInterval= null;
+    var lockBoard    = false;
+
+    function startGame() {
+      clearInterval(timerInterval);
+      flipped      = [];
+      matchedCount = 0;
+      moves        = 0;
+      seconds      = 0;
+      lockBoard    = false;
+
+      document.getElementById('movesCount').textContent = '0';
+      document.getElementById('pairsCount').textContent = '0';
+      document.getElementById('timerCount').textContent = '0';
+
+      // shuffle
+      var deck = EMOJIS.concat(EMOJIS);
+      deck.sort(function() { return Math.random() - 0.5; });
+
+      var grid = document.getElementById('cardGrid');
+      grid.innerHTML = '';
+
+      deck.forEach(function(emoji, i) {
+        var card = document.createElement('div');
+        card.className = 'mem-card';
+        card.dataset.emoji = emoji;
+        card.dataset.index = i;
+        card.innerHTML =
+          '<div class="mem-card-inner">' +
+            '<div class="mem-card-front">' + emoji + '</div>' +
+            '<div class="mem-card-back"></div>' +
+          '</div>';
+        card.addEventListener('click', onCardClick);
+        grid.appendChild(card);
+      });
+
+      timerInterval = setInterval(function() {
+        seconds++;
+        document.getElementById('timerCount').textContent = seconds;
+      }, 1000);
+    }
+
+    function onCardClick() {
+      if (lockBoard) return;
+      if (this.classList.contains('flipped')) return;
+      if (this.classList.contains('matched')) return;
+
+      this.classList.add('flipped');
+      flipped.push(this);
+
+      if (flipped.length === 2) {
+        lockBoard = true;
+        moves++;
+        document.getElementById('movesCount').textContent = moves;
+        checkMatch();
+      }
+    }
+
+    function checkMatch() {
+      var a = flipped[0];
+      var b = flipped[1];
+      if (a.dataset.emoji === b.dataset.emoji) {
+        a.classList.add('matched');
+        b.classList.add('matched');
+        matchedCount++;
+        document.getElementById('pairsCount').textContent = matchedCount;
+        flipped   = [];
+        lockBoard = false;
+        if (matchedCount === EMOJIS.length) {
+          clearInterval(timerInterval);
+          setTimeout(showWin, 500);
+        }
+      } else {
+        setTimeout(function() {
+          a.classList.remove('flipped');
+          b.classList.remove('flipped');
+          flipped   = [];
+          lockBoard = false;
+        }, 900);
+      }
+    }
+
+    function showWin() {
+      document.getElementById('winMsg').textContent =
+        'Completed in ' + moves + ' moves and ' + seconds + ' seconds. Great job!';
+      document.getElementById('winOverlay').classList.add('show');
+    }
+
+    function closeWin() {
+      document.getElementById('winOverlay').classList.remove('show');
+    }
+  </script>
+
+</body>
+</html>
